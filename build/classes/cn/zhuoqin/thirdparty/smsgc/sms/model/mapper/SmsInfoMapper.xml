@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.zhuoqin.thirdparty.smsgc.sms">
+
+	<resultMap id="SmsInfo" type="cn.zhuoqin.thirdparty.smsgc.sms.model.SmsInfo">
+		<result property="id" column="ID" />
+		<result property="mobile" column="MOBILE" />
+		<result property="content" column="CONTENT" />
+		<result property="jobId" column="JOB_ID" />
+		<result property="smsTmplId" column="SMS_TMPL_ID" />
+		<result property="batchId" column="BATCH_ID" />
+
+		<result property="chdrnum" column="CHDRNUM" />
+		<result property="company" column="COMPANY" />
+		<result property="department" column="DEPARTMENT" />
+		<result property="feeType" column="FEETYPE" />
+		<result property="smsType" column="SMSTYPE" />
+		<result property="autoread" column="AUTOREAD" />
+		<result property="gwid" column="GWID" />
+		<result property="flagNo" column="FLAGNO" />
+		<result property="orderNo" column="ORDER_NO" />
+		<result property="shortNum" column="SHORT_NUM" />
+		<result property="userId" column="USER_ID" />
+
+		<result property="statusId" column="STATUS_ID" />
+		<result property="sendStartDate" column="SEND_START_DATE" />
+		<result property="sendStartTime" column="SEND_START_TIME" />
+		<result property="sendEndDate" column="SEND_END_DATE" />
+		<result property="sendEndTime" column="SEND_END_TIME" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="sendTime" column="SEND_TIME" />
+		<result property="updatetime" column="UPDATE_TIME" />
+	</resultMap>
+
+	<insert id="SmsInfo.insert">
+		INSERT INTO msg_sms (MOBILE, CONTENT, JOB_ID,
+		SMS_TMPL_ID, BATCH_ID,
+		CHDRNUM,COMPANY,DEPARTMENT,SMSTYPE,AUTOREAD,GWID,FLAGNO,ORDER_NO,SHORT_NUM,USER_ID,STATUS_ID,
+		SEND_START_DATE, SEND_START_TIME,
+		SEND_END_DATE, SEND_END_TIME,
+		CREATE_TIME, SEND_TIME, UPDATE_TIME)
+		VALUES (#{mobile}, #{content},
+		#{jobId}, #{smsTmplId},
+		#{batchId},#{chdrnum},#{company},#{department},#{smsType},#{autoread},#{gwid},#{flagNo},#{orderNo},#{shortNum},#{userId},
+		#{statusId}, #{sendStartDate}, #{sendStartTime}, #{sendEndDate},
+		#{sendEndTime}, #{createTime}, NULL, NULL)
+	</insert>
+
+	<update id="SmsInfo.updateBatchStatus">
+	  <![CDATA[	
+	  	update msg_sms set STATUS_ID = ${statusId} where
+		batch_id=${batchId} and status_id<>2
+			]]>
+	</update>
+
+</mapper>

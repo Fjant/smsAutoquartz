@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.zhuoqin.thirdparty.smsgc">
+
+	<resultMap id="SmsTmpl"
+		type="cn.zhuoqin.thirdparty.smsgc.smstmpl.model.SmsTmpl">
+		<result property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="sqlTmpl" column="SQL_TMPL" />
+		<result property="dataSource" column="DATASOURCE" />
+		<result property="smsTmpl" column="SMS_TMPL" />
+		<result property="jobId" column="JOB_ID" />
+		<result property="orderNo" column="ORDER_NO" />
+		<result property="dataSource" column="DATASOURCE" />		
+		<result property="statusId" column="STATUS_ID" />
+		<result property="createTime" column="CREATE_TIME" />
+	</resultMap>
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="SmsTmpl.columns">
+	    <![CDATA[
+		 ID,NAME,SQL_TMPL,DATASOURCE,SMS_TMPL,ORDER_NO,JOB_ID,DATASOURCE,STATUS_ID,CREATE_TIME
+		]]>
+	</sql>
+
+	<select id="SmsTmpl.getByJobId" resultMap="SmsTmpl">
+		SELECT * FROM
+		msg_sms_tmpl WHERE JOB_ID = #{jobId} order by order_no
+	</select>
+
+	<select id="SmsTmpl.select" resultMap="SmsTmpl">
+		SELECT
+		<include refid="SmsTmpl.columns" />
+		FROM msg_sms_tmpl
+	</select>
+
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Data>
+	<!-- 是否使用代理访问外网 -->
+	<UseProxy>
+		true
+	</UseProxy>
+	<!-- 代理服务器 -->
+	<ProxyHost>
+		pxyappsvr.prd.xincheng.china
+	</ProxyHost>
+	<!-- 代理服务器端口 -->
+	<ProxyPort>
+		8080
+	</ProxyPort>
+	<!-- 邮件服务器 -->
+	<EmailHost>
+		128.232.11.66
+	</EmailHost>
+	<!-- 邮件发送者帐号 -->
+	<EmailUserName>cus@citicpru.com.cn</EmailUserName>
+	<!-- 邮件发送者帐号密码 -->
+	<EmailPassword>1234</EmailPassword>
+	<!-- 发送短信参数 -->
+	<CpiepSysId>S006</CpiepSysId>
+	<CpiepRoleId>R011</CpiepRoleId>
+	<CpiepContext>SQS</CpiepContext>
+	<SmsIntfId>SMS001</SmsIntfId>
+	<CpiepEnCode>UTF-8</CpiepEnCode>
+	<SmsUserType>2</SmsUserType>
+	<SmsUserId>60000044</SmsUserId>
+	<SmsReturnType>xml</SmsReturnType>
+	<SmsMethodType>load</SmsMethodType>
+	<SmsSessionKey>GI</SmsSessionKey>
+	<CpiepEncrypt>Y</CpiepEncrypt>
+	<SmsSender>SQS</SmsSender>
+	<SmsFlagNo>0035</SmsFlagNo>
+	<SmsGwid>39</SmsGwid>
+	<SmsAutoRead>1</SmsAutoRead>
+	<SmsType>1</SmsType>
+	<SmsChdrnum></SmsChdrnum>
+	<SmsBackNo></SmsBackNo>
+	<SmsInd04></SmsInd04>
+	<SmsInd05>955581110</SmsInd05>
+	<SmsCompany>00010000</SmsCompany>
+	<SmsDepartment>00010003</SmsDepartment>
+	<SmsCheckHmd>0</SmsCheckHmd>
+	<!-- 数据库SCHEMA，注意以 . 结束 -->
+	<LAS_SCHEMA>
+		PRDDTA.
+	</LAS_SCHEMA>
+</Data>

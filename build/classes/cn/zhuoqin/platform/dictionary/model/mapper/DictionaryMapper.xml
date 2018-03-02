@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.zhuoqin.platform.dictionary">
+
+	<resultMap id="Dictionary"
+		type="cn.zhuoqin.platform.dictionary.model.Dictionary">
+		<result property="id" column="ID" />
+		<result property="itemNameChnTc" column="ITEM_NAME_CHN_TC" />
+		<result property="itemNameChnSc" column="ITEM_NAME_CHN_SC" />
+		<result property="itemNameEn" column="ITEM_NAME_EN" />
+		<result property="itemValue" column="ITEM_VALUE" />
+		<result property="itemLevel" column="ITEM_LEVEL" />
+		<result property="parentId" column="PARENT_ID" />
+		<result property="firstLevelId" column="FIRST_LEVEL_ID" />
+		<result property="seconeLevelId" column="SECOND_LEVEL_ID" />
+		<result property="thirdLevelId" column="THIRD_LEVEL_ID" />
+		<result property="forthLevelId" column="FORTH_LEVEL_ID" />
+		<result property="sortNo" column="SORT_NO" />
+		<result property="dataType" column="DATA_TYPE" />
+		<result property="comments" column="COMMENTS" />
+		<result property="createTime" column="CREATE_TIME" />
+	</resultMap>
+
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Dictionary.columns">
+	    <![CDATA[
+		 ID ,  ITEM_NAME_CHN_TC ,ITEM_NAME_CHN_SC,  ITEM_NAME_EN ,  ITEM_VALUE ,  ITEM_LEVEL ,  PARENT_ID ,  FIRST_LEVEL_ID ,  SECOND_LEVEL_ID ,  THIRD_LEVEL_ID ,  FORTH_LEVEL_ID ,  SORT_NO ,  DATA_TYPE ,  COMMENTS ,  CREATE_TIME ]]>
+	</sql>
+
+	<sql id="Dictionary.where">
+		<where>
+			<if test="parentId != null ">
+				AND PARENT_ID = #{parentId}
+			</if>
+			<if test="id != null and id!='' ">
+				AND ID = #{id}
+			</if>
+			<if test="dataType != null ">
+				AND DATA_TYPE = #{dataType}
+			</if>
+			<if test="itemLevel != null ">
+				AND ITEM_LEVEL = #{itemLevel}
+			</if>
+			<if test="itemNameChnSc != null and itemNameChnSc!='' ">
+				AND ITEM_NAME_CHN_SC = #{itemNameChnSc}
+			</if>
+		</where>
+	</sql>
+
+	<update id="Dictionary.updateItemNameChn">
+
+		UPDATE tb_cmhk_realname_dic
+		<set>
+			<if test="itemNameChnSc != null ">
+				ITEM_NAME_CHN_SC = #{itemNameChnSc}
+			</if>
+		</set>
+		WHERE ID = #{id}
+	</update>
+
+	<!-- 根据上级Id和字典类型查询字典 -->
+	<select id="Dictionary.selectDictionary" resultMap="Dictionary">
+		SELECT
+		<include refid="Dictionary.columns" />
+		FROM tb_cmhk_realname_dic
+		<include refid="Dictionary.where" />
+	</select>
+
+	<!--查询单一对象 -->
+	<select id="Dictionary.findDictionary" resultMap="Dictionary">
+		SELECT
+		<include refid="Dictionary.columns" />
+		FROM tb_cmhk_realname_dic
+		<include refid="Dictionary.where" />
+	</select>
+
+</mapper>

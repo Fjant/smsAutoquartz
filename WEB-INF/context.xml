@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+	<!-- Default set of monitored resources -->
+	<WatchedResource>WEB-INF/web.xml</WatchedResource>
+
+
+	
+	
+	<!-- 短信发送平台 数据库-->
+	<Resource name="jdbc/localDB" type="javax.sql.DataSource"
+		factory="org.apache.commons.dbcp2.BasicDataSourceFactory"
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://128.232.6.208:3306/smsdb?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"
+		username="smsdb_usr" password="Phe832#as" maxWaitMillis="3000"
+		initialSize="10" maxIdle="30" minIdle="10" maxTotal="30"
+		validationQuery="select 1 from dual" testWhileIdle="true"
+		testOnBorrow="false" timeBetweenEvictionRunsMillis="30000"
+		minEvictableIdleTimeMillis="1800000" numTestsPerEvictionRun="10"
+		removeAbandonedOnMaintenance="true" removeAbandonedTimeout="180" />
+		 
+
+	<!-- 短信中心数据库 -->
+	<Resource name="jdbc/smsDB" auth="Container" type="javax.sql.DataSource"
+		driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+		url="jdbc:sqlserver://128.232.6.238:55857;databaseName=flexsmsnew"
+		username="dev_sms" password="dev_sms" maxActive="20" maxIdle="10"
+		maxWait="10000" />
+
+
+	<!-- CLVMODATA 数据库 -->
+	<Resource name="jdbc/lasDB" type="javax.sql.DataSource"
+		factory="org.apache.commons.dbcp2.BasicDataSourceFactory"
+		driverClassName="com.ibm.as400.access.AS400JDBCDriver"
+		url="jdbc:as400://128.232.9.223;libraries=CLVMOTDTA,*LIBL;errors=full"
+		username="CLVMOT" password="abcdef" maxWaitMillis="3000"
+		initialSize="10" maxIdle="30" minIdle="10" maxTotal="30"
+		validationQuery="select 1 from sysibm.tables fetch first 1 rows only" testWhileIdle="true"
+		testOnBorrow="false" timeBetweenEvictionRunsMillis="30000"
+		minEvictableIdleTimeMillis="1800000" numTestsPerEvictionRun="10"
+		removeAbandonedOnMaintenance="true" removeAbandonedTimeout="180" />
+</Context>

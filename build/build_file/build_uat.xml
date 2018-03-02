@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding='GB2312' ?>
+<!-- 另注：encoding定义为GB2312之后，可以将以下所有name属性设置为中文名字 -->
+<!-- 定义工程属性：
+名称：smsAutoquartz
+默认的任务：default（指向本xml中定义的某个target描述的任务）；
+基路径：basedir（定义所有相关任务或属性中相对路径的基础路径）。
+-->
+<project name="smsAutoquartz" default="release" basedir="../../" >
+
+<!-- 取Window，Unix的环境变量 -->
+<property environment="env"/>
+
+<!-- 变量 jdk 定义程序附带JDK的路径,不能为相对路径 -->
+<property name="jdk" value="${env.JAVA_HOME}/bin"/>
+
+<!-- 变量 src 定义系统默认JDK编译程序的路径 -->
+<property name="src" value="${basedir}/src"/>
+
+<!-- 变量 webroot，指定 web 文件路径 -->
+<property name="webroot" value="${basedir}/WebContent"/>
+	
+<!-- 变量 build.root，指定 web 文件路径 -->
+<property name="build.root" value="${basedir}/build/smsAutoquartz"/>
+
+<!-- 变量 build.lib，定义java文件编译时使用的包路径 -->
+<property name="build.lib" value="${build.root}/WEB-INF/lib"/>
+
+<!-- 变量 build.classes 定义编译后class类文件的存放路径 -->
+<property name="build.classes" value="${build.root}/WEB-INF/classes"/>
+
+<!-- 变量 WebXmlPath，指定web.xml文件路径 -->
+<property name="WebXmlPath" value="${build.root}/WEB-INF/web.xml"/>
+	
+<!-- 变量 config，打不同环境的包，需要不通的值 如：config_dev config_uat -->
+<property name="config" value="${basedir}/build/config/config_uat"/>
+
+<!-- 变量 build.war，定义生成的war包文件路径 -->
+<property name="build.war" value="${basedir}/build/war"/>   
+
+<!-- 初始化打包目录 -->
+<target name="init">
+	<echo>先清空目标路径 [${build.classes}] 下的旧编译文件</echo>
+	<delete dir="${build.root}" includeemptydirs="true"/>
+	<echo>从WebRoot文件夹加载所有的源文件，除了*.class</echo>
+	<mkdir dir="${build.classes}"/>
+	<!--将WebContent下面所有的文件(除了class)copy到build/smsAutoquartz -->
+	<copy todir="${build.root}">
+	  	<fileset dir="${webroot}">
+	    	<exclude name="**/*.class"/>
+	    </fileset>
+	</copy>
+	<!-- 将src目录下面的所有配置文件(如:com/citicpru/netsaler/entity/*.xml)copy到classes目录下面 -->
+	<copy todir="${build.classes}">
+	  	<fileset dir="${src}">
+	    	<exclude name="**/*.java"/>
+	    </fileset>
+	</copy>
+</target>
+
+<!-- 加载不同环境的配置文件 -->
+<target name="copy_config" depends="init">
+	<echo>加载不同环境的配置文件</echo>
+	<copy todir="${build.root}" overwrite="true">
+		<fileset dir="${config}" />
+	</copy>	
+</target>	
+<!-- 编译java文件，拷贝 properties 属性配置文件到编译后的路径下 -->
+<target name="compile" depends="copy_config" description="编译java文件，拷贝 properties 属性配置文件到编译后的路径下">   
+  <echo>
+		现在开始编译: ${basedir}
+		源文件路径是: ${src}
+		编译后的类路径是：${build.classes}
+	</echo>
+	<javac executable="${jdk}/javac" srcdir="${src}" destdir="${build.classes}"
+			debug="on" memoryMaximumSize="256m" fork="yes" includeantruntime="on" >
+		<compilerarg line="-encoding UTF-8 "/>   
+		<classpath>
+			<fileset dir="${build.lib}"/>
+		</classpath>
+	</javac>
+	<echo>编译完毕</echo>
+</target>   
+<!-- 打war包 -->
+<target name="release" depends="compile">
+ 	<delete dir="${build.war}" includeemptydirs="true"/>
+	<mkdir dir="${build.war}"/>
+	<echo>开始打包</echo>
+	<war destfile="${build.war}/smsAutoquartz_uat.war" webxml="${WebXmlPath}" >
+	  <lib dir="${build.lib}"/>
+	  <!-- classes目录下面只需要考虑以下文件 -->
+	  <classes dir="${build.classes}">
+	  	<include name="**/*.class"/>
+	  	<include name="**/*.xml"/>
+	  	<include name="**/*.properties"/>
+	  	<include name="**/*.cer"/>
+	  	<include name="**/*.pfx"/>
+	  </classes>
+	  <!--项目中用到的所有文件类型都需要在这里进行exclude-->
+	  <fileset dir="${build.root}">
+	     <exclude name="**/*.class"/>
+	     <!--<exclude name="**/*.xml"/>-->
+	     <exclude name="**/*.properties"/>
+	 	 <exclude name="**/*.cer"/>
+	     <exclude name="**/*.pfx"/>
+	  	 <exclude name="**/*.jar"/>
+	  </fileset>
+	   
+	</war>
+	<delete dir="${build.root}" includeemptydirs="true"/>
+	<echo>打包完毕</echo>
+</target>
+</project>
